@@ -1,0 +1,146 @@
+Practical 1: Select queries and joins
+
+
+
+ create table client08
+ (
+ client_no  varchar2(6) primary key,
+ cname   varchar2(30),
+ city  varchar2(20),
+ balance number(10,2)
+ )
+
+
+//.
+
+create table product08
+(
+product_no   varchar2(6) primary key,
+pname varchar(20),
+unitmeasure varchar2(10),
+qty number(8),
+sellprice number(10,2),
+costprice number(10,2)
+)
+
+
+
+create table order_details13
+(
+order_no   varchar2(6) primary key,
+client_no  varchar2(6) references client13(client_no),
+odate date,
+product_no varchar2(6) references product13(product_no),
+delydate date,
+orderstatus varchar2(20),
+qtyordered number(8)
+)
+
+
+
+VALUES:
+
+1.Values of client08
+
+insert into client
+values('C001','Deepak Sharma','Virar', 1500)
+
+ insert into client08
+ values('C002','Ashwini Joshi','Borivali', 5000)
+
+ insert into client08
+ values('C003','Rocky Colaco','Virar', 1000)
+
+
+ insert into client08
+ values('C004','Archana Phatak','Vasai', 0)
+
+
+
+2. Values of product13
+
+
+insert into product13
+values('P001','T-Shirts','piece',500,350,250)
+
+insert into product13
+values('P002','Shirt','piece',350,1200,1000)
+
+insert into product13
+values('P003','Jeans','piece',400,1000,950)
+
+insert into product13
+values('P004','Shirts','piece',500,500,400)
+
+insert into product13
+values('P005','Cotton Jeans','piece',300,1000,900)
+
+
+3. Values of order_details13
+
+
+ insert into order_details13
+ values('O1001','C002','12-jun-94','P001','05-oct-94','fullfilled',100)
+
+ insert into order_details13
+ values('O1002','C002','04-feb-04','P001','08-jun-04','fullfilled',250)
+
+ insert into order_details13
+ values('O1003','C001','17-may-10','P002','10-jun-10','Cancelled',150)
+
+ insert into order_details13
+ values('O1004','C003','24-may-10','P003','02-aug-11','Inprocess',75)
+
+ insert into order_details13
+ values('O1005','C003','04-nov-10','P003','02-aug-10','fullfilled',350)
+
+28.08.2011
+
+create table emp31
+(
+eid	number(10) 	primary key,
+ename	varchar2(50)		   ,
+mgrid	number(10)
+);	
+
+alter table emp31 add constraint kooo foreign key (mgrid) references emp31(eid);
+
+
+
+insert into emp31 values
+(100,'x',null);
+
+insert into emp31 values
+(101,'y',100);
+
+insert into emp31 values
+(102,'z',101);
+
+insert into emp31 values
+(103,'p',102);
+
+
+select eid,ename,mgrid
+from emp31
+connect by prior eid=mgrid;
+
+select eid,ename,mgrid
+from emp31
+connect by eid=prior mgrid;
+
+
+
+
+select eid,ename,mgrid
+from emp31
+start with eid=100
+connect by prior eid=mgrid;
+order by level;
+
+
+select eid,ename,mgrid
+from emp31
+start with eid=102
+connect by prior eid=mgrid;
+order by level;
+

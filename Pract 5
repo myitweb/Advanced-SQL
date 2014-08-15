@@ -1,0 +1,149 @@
+Practical 5: Basic PL/SQL, INDEX BY tables, PL/SQL Record and FOR loop.
+	a. Creating anonymous PL/SQL blocks.
+	b. Define, create, and use INDEX BY tables and a PL/SQL record.
+	c. Process a number of rows from a table and populate another table with the results using a cursor FOR loop.
+
+
+
+1.begin 
+dbms_output.put_line('hello world');
+dbms_output.put_line('today is'||to_char(sysdate,'dd-mm-yyyy'));
+end;
+
+2.
+begin
+vartext:='First Block';
+dbms_output.put_line (vartext);
+
+
+declare
+varname varchar2(15);
+begin
+varname:='second Block';
+dbms_output.put_line (varname);
+
+end;
+end;
+
+
+
+6.9.2011
+
+
+
+create table lecturer
+(
+lec_id  varchar(10),
+fname   varchar(10),
+lname   varchar(10)
+)
+/
+
+insert into lecturer values
+(1,'Ram','das');
+
+insert into lecturer values
+(2,'jay','patel');
+
+
+ declare
+ varfname lecturer.fname%type;
+ varlname lecturer.lname%type;
+ begin
+ select fname,lname into varfname,varlname from lecturer
+ where lec_id=&lecturerid;
+ dbms_output.put_line(varfname||' '||varlname);
+serveroutputon;
+ end;
+
+3. Write Pl SQL block to create grade of students. 
+declare
+grade	vr(2)
+begin
+grade:=&gd;
+if grade='A' then
+dbms_output.put_line('Excelent');
+elsif grade='B' then
+dbms_output.put_line('Very Good');
+elsif grade='C' then
+dbms_output.put_line('Good');
+elsif grade='D' then
+dbms_output.put_line('Poor');
+else
+dbms_output.put_line('No Grade');
+end if;
+end;
+
+
+
+
+declare
+grade varchar2(20);
+begin
+grade:='&gd';
+if grade='A' then
+dbms_output.put_line('Excelent');
+elsif grade='B' then
+dbms_output.put_line('Very Good');
+elsif grade='C' then
+dbms_output.put_line('Good');
+elsif grade='D' then
+dbms_output.put_line('Poor');
+else
+dbms_output.put_line('No Grade');
+end if;
+end;
+
+
+
+declare
+grade varchar2(20);
+begin
+grade:='&gd';
+case when grade='A' then
+dbms_output.put_line('Excelent');
+when grade='B' then
+dbms_output.put_line('Very Good');
+when grade='C' then
+dbms_output.put_line('Good');
+when grade='D' then
+dbms_output.put_line('Poor');
+else 
+dbms_output.put_line('No Grade');
+end case;
+end;
+
+
+4
+WRITE PL/SQl block to print no from 1 to 10 using simple loop. 
+declare
+i number:=0;
+begin
+loop
+i:=i+1;
+dbms_output.put_line('number'||i);
+exit when i>10;
+end loop;
+end;
+
+
+Using While LOOP
+declare
+i number:=0;
+begin
+while i<=10 
+loop
+i:=i+1;
+dbms_output.put_line('number'||i);
+end loop;
+end;
+
+6
+consider LECTURE table & display fname & lname using fo LOOP .
+begin
+for i in (select * from lecturer)
+loop
+dbms_output.put_line(i.fname||' ' ||i.lname);
+end loop;
+end;
+

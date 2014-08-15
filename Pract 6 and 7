@@ -1,0 +1,97 @@
+6. Practical 6: Cursors, Exceptions and procedures issuing DML and query commands.
+	a. Cursors with parameters to process a number of rows from multiple tables.
+	b. Create exception handlers for specific situations.
+	c. Create procedures that issue DML and query commands.
+
+7. Practical 7: Functions and Stored Procedures
+	a. Creating and invoking functions from SQL statements.
+	b. Creating and invoking stored procedures.
+	c. Re-create the source code for a procedure and a function.
+
+
+1 .
+Create Table Student & insert record in it .
+write explicit cursor to display rollno & name of those student whose marks is grater than 60.
+
+create table student31
+(
+roll_no number,
+name varchar(10),
+marks number
+);
+
+insert into student31 values
+(1,'Harikesh',55);
+
+
+insert into student31 values
+(2,'Dichhu',60);
+
+insert into student31 values
+(3,'abhilash',89);
+
+
+
+declare
+varroll	number;
+varname	varchar(20);
+cursor c1 is
+select roll_no,name from student31
+where marks>=60;
+begin
+open c1;
+loop
+fetch c1 into varroll,varname;
+exit when c1%notfound;
+dbms_output.put_line(varroll||'   ' ||varname);
+end loop;
+close c1;
+end;
+
+Use Table Student & create a temp table with help of cursor for loop insert student with name starts with H. 
+
+create table temp31
+(
+roll_no number,
+name varchar(10),
+marks number
+);
+
+
+declare 
+cursor c2 is
+select roll_no,name,marks from student31
+where name like 'H%';
+begin
+for i in c2
+loop
+insert into temp31 values(i.roll_no,i.name,i.marks);
+end loop;
+dbms_output.put_line('Data Inserted Sucessfully');
+commit;
+end;
+
+ select * from temp31;
+
+8
+Use Student table create a paramaterize cursor to find given student in table.
+
+declare 
+varroll student31.roll_no%type;
+varname student31.name%type;
+id number;
+cursor c3 (id in number)
+is 
+select roll_no,name from student31
+where roll_no=id;
+begin
+id:=&id;
+open c3(id);
+loop
+fetch c3 into varroll,varname;
+exit when c3%notfound;
+dbms_output.put_line(varroll||'   ' ||varname);
+end loop;
+close c3;
+end;
+
